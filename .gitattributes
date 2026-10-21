@@ -1,0 +1,5 @@
+# Linguist overrides to ignore HTML snapshot files and classify repo as TypeScript/Next.js
+*.html linguist-detectable=false
+*.html linguist-documentation=true
+public/*.html linguist-detectable=false
+public/*.html linguist-vendored=true
