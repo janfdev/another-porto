@@ -92,6 +92,21 @@
     }
     if (batch.length) show(batch);
   }
+
+  window.initMotion = function() {
+    items = [];
+    document.querySelectorAll(PICK).forEach(function (el) {
+      if (el.closest(SKIP)) return;
+      if (el.parentElement && el.parentElement.closest('.m-item')) return;
+      if (!el.closest('main, section, footer, article')) return;
+      el.classList.add('m-item');
+      if (el.matches(MEDIA)) el.classList.add('m-media');
+      items.push(el);
+      io.observe(el);
+    });
+    doc.classList.add('m-on');
+    check();
+  };
   function queue() { if (!pending) { pending = true; setTimeout(check, 60); } }
   if (lenis) lenis.on('scroll', queue);
   addEventListener('scroll', queue, { passive: true });

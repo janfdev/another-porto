@@ -670,7 +670,7 @@ span.pill{display:inline-block;font-size:14px;font-weight:500;line-height:1;padd
 .orbit__fade--r{right:0;background:linear-gradient(270deg,#fff 0%,rgba(255,255,255,.55) 45%,rgba(255,255,255,0) 100%);
   -webkit-mask-image:linear-gradient(270deg,#000 35%,transparent);mask-image:linear-gradient(270deg,#000 35%,transparent)}
 .orbit__fade--b{left:0;right:0;bottom:0;height:12%;background:linear-gradient(0deg,#fff,rgba(255,255,255,0))}
-.orbit__copy{position:relative;z-index:3;text-align:center;max-width:760px;padding:0 24px;margin-top:16vh}
+.orbit__copy{position:relative;z-index:3;text-align:center;max-width:760px;padding:0 24px;margin-top:22vh}
 .orbit__title{font:300 clamp(36px,5vw,64px)/1.1 var(--heading);letter-spacing:-.015em;color:#111111;text-wrap:balance}
 .orbit__title .w{display:inline-block;transition:color .35s cubic-bezier(.2,.7,.2,1), transform .35s cubic-bezier(.2,.7,.2,1)}
 .orbit__title .w:hover{color:#111;transform:translateY(-3px)}

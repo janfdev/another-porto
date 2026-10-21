@@ -44,8 +44,8 @@ export default function Home() {
         cs = W < 640 ? 96 : W < 1000 ? 120 : 140;
         cx = W / 2;
         cy = copy.offsetTop + copy.offsetHeight / 2;
-        R = W < 640 ? Math.max(250, W * 0.66) : Math.min(600, Math.max(400, W * 0.45));
-        Ry = Math.max(180, Math.min(R - 40, cy - 130 + cs * 0.25));
+        R = W < 640 ? Math.max(240, W * 0.6) : Math.min(540, Math.max(380, W * 0.42));
+        Ry = Math.max(140, Math.min(R - 70, cy - 180 + cs * 0.2));
         ring.style.setProperty("--cs", cs + "px");
       }
 
@@ -112,6 +112,127 @@ export default function Home() {
       t.addEventListener("click", () => openTab(t));
       t.addEventListener("mouseenter", () => openTab(t));
     });
+
+    // 4. Testimonials Sticky Notes Deck Animation (pile -> grid)
+    const words = document.getElementById("words");
+    const board = document.getElementById("board");
+    if (words && board) {
+      const pinEl = words.querySelector(".words__pin") as HTMLElement;
+      const notes = Array.prototype.slice.call(board.querySelectorAll(".note")) as HTMLElement[];
+      const fanR = [-7, 5, -3, 8, -5, 3, -8, 6];
+      const fanX = [-14, 10, -6, 16, -10, 6, -16, 12];
+      const restR = [-2, 1.5, -1, 2.5, 1.5, -2, 1, -1.5];
+      let geo: { dx: number; dy: number }[] = [];
+      let pinned = false;
+      let pCur = 0;
+      let pRunning = false;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function clamp(v: number, a: number, b: number) {
+        return Math.min(b, Math.max(a, v));
+      }
+
+      function measureNotes() {
+        if (!board || !words) return;
+        pinned = window.matchMedia("(min-width: 901px) and (min-height: 640px)").matches;
+        words.classList.toggle("is-pinned", pinned);
+        const bw = board.clientWidth,
+          bh = board.clientHeight;
+        geo = notes.map((n, i) => {
+          const cx = n.offsetLeft + n.offsetWidth / 2,
+            cy = n.offsetTop + n.offsetHeight / 2;
+          let tx = 0,
+            ty = 0;
+          if (pinned) {
+            tx = bw / 2;
+            ty = bh / 2;
+          } else if (i === 0) {
+            tx = cx;
+            ty = cy;
+          } else {
+            tx = notes[i - 1].offsetLeft + notes[i - 1].offsetWidth / 2;
+            ty = notes[i - 1].offsetTop + notes[i - 1].offsetHeight / 2;
+          }
+          return {
+            dx: tx - cx + (pinned ? fanX[i] : 0),
+            dy: ty - cy + (pinned ? fanX[i] * 0.4 : 0),
+          };
+        });
+        notes.forEach((n, i) => {
+          n.style.zIndex = String(notes.length - i);
+        });
+      }
+
+      function ease(t: number) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function noteProgress(i: number, p: number) {
+        if (pinned) {
+          const st = 0.35;
+          return clamp((p - (i * st) / (notes.length - 1)) / (1 - st), 0, 1);
+        }
+        const top = notes[i].getBoundingClientRect().top - ((notes[i] as any)._ty || 0);
+        return clamp((window.innerHeight * 0.92 - top) / (window.innerHeight * 0.32), 0, 1);
+      }
+
+      function pTarget() {
+        if (reduceMotion) return 1;
+        if (pinned && pinEl) return clamp(-pinEl.getBoundingClientRect().top / (window.innerHeight * 0.8), 0, 1);
+        return 0;
+      }
+
+      function drawNotes(p: number) {
+        let spread = true;
+        notes.forEach((n, i) => {
+          const q = reduceMotion ? 1 : noteProgress(i, p);
+          const e = ease(q);
+          const g = geo[i] || { dx: 0, dy: 0 };
+          const x = g.dx * (1 - e);
+          const y = g.dy * (1 - e);
+          const r = (pinned ? fanR[i] : fanR[i] * 0.5) * (1 - e) + restR[i] * e;
+          (n as any)._ty = y;
+          n.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg) scale(${(1 - 0.03 * (1 - e)).toFixed(3)})`;
+          if (q < 0.98) spread = false;
+        });
+        if (board) board.classList.toggle("is-spread", spread);
+      }
+
+      function tickNotes() {
+        pRunning = false;
+        const t = pTarget();
+        pCur += (t - pCur) * (reduceMotion ? 1 : 0.16);
+        if (Math.abs(t - pCur) < 0.0008) pCur = t;
+        drawNotes(pCur);
+        if (pCur !== t) kickNotes();
+      }
+
+      function kickNotes() {
+        if (!pRunning) {
+          pRunning = true;
+          requestAnimationFrame(tickNotes);
+        }
+      }
+
+      measureNotes();
+      drawNotes(pinned ? pTarget() : 0);
+      pCur = pTarget();
+      window.addEventListener("scroll", kickNotes, { passive: true });
+      window.addEventListener("resize", () => {
+        notes.forEach((n) => {
+          n.style.transform = "";
+          (n as any)._ty = 0;
+        });
+        measureNotes();
+        kickNotes();
+      });
+      kickNotes();
+    }
+
+    // 5. Trigger motion.js re-scan for dynamic hydrated elements
+    if (typeof (window as any).initMotion === "function") {
+      (window as any).initMotion();
+    }
 
     return () => {
       window.removeEventListener("scroll", onScrollUi);
