@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fachri All Khijaro — Next.js Portfolio Rewrite
+
+A modern, high-performance rewrite of **[Fachri All Khijaro's Portfolio](https://fachri-ak-portfolio.vercel.app/)** built with **Next.js 15 App Router**, **Tailwind CSS**, and **TypeScript**.
+
+## Architecture & Features
+- **Next.js 15 App Router**: Server Components by default with client-side interactivity boundaries (`"use client"`).
+- **Clean Semantic Routing**:
+  - `/` (Home / Come In): Hero orbital showcase, brand clients, about card, experience timeline, selected work, and testimonials.
+  - `/meet-me`: Full career history, academic background, professional certifications, and technical toolsets.
+  - `/work`: Dynamic category-filtered project catalog (UI/UX, Branding, Social Media, Event, E-Commerce).
+  - `/work/[slug]`: Dynamic case study pages generated statically via `generateStaticParams()`.
+- **Motion & Smooth Scroll**:
+  - Integrated [Lenis Smooth Scroll](https://github.com/darkroomengineering/lenis) provider for friction-free viewport scrolling.
+  - Motion / CSS transforms for the 3D rotating hero orbit.
+- **Image Optimization**: Powered by `next/image` with automatic WebP/AVIF compression.
+- **Typography & Styling**: Instrument Serif, Inter, and Tailwind CSS.
+- **Zero Broken Links**: Clean client-side navigation without `.html` file extensions.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Attribution & Credits
+All original design work, client brand logos, case study media, and photography belong to **Fachri All Khijaro**.
+Original site: https://fachri-ak-portfolio.vercel.app/
+Rewritten strictly as an engineering benchmark and architectural modern-stack migration study.
