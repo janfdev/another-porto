@@ -1,6 +1,6 @@
-# Fachri All Khijaro — Next.js Portfolio Rewrite
+# Another Porto — Next.js Portfolio
 
-A modern, high-performance rewrite of **[Fachri All Khijaro's Portfolio](https://fachri-ak-portfolio.vercel.app/)** built with **Next.js 15 App Router**, **Tailwind CSS**, and **TypeScript**.
+A modern, high-performance portfolio built with **Next.js 15 App Router**, **Tailwind CSS**, and **TypeScript**.
 
 ## Architecture & Features
 - **Next.js 15 App Router**: Server Components by default with client-side interactivity boundaries (`"use client"`).
