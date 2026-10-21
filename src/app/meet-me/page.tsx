@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Script from "next/script";
+import "@/app/original-meet.css";
 import { RAW_MEET_HTML } from "@/data/raw-html";
 
 export default function MeetMePage() {

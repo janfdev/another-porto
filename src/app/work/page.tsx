@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Script from "next/script";
+import "@/app/original-work.css";
 import { RAW_WORK_HTML } from "@/data/raw-html";
 
 export default function WorkPage() {

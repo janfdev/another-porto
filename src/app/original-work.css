@@ -4,7 +4,7 @@ strong,b{font-weight:500}
 @font-face{font-family:"Ortica";font-weight:300;font-style:normal;font-display:swap;
   src:url("/assets/fonts/Ortica-Light.woff2") format("woff2"),url("/assets/fonts/Ortica-Light.woff") format("woff")}
 
-/* Layout: editorial case study: short hero with mockup, then sticky "On this page" + one reading column */
+/* Layout: editorial case study : short hero with mockup, then sticky "On this page" + one reading column */
 :root{
   --radius:10px; --radius-sm:6px;
   --bg:#ffffff;
