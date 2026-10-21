@@ -1,41 +1,58 @@
-import React from "react";
-import Link from "next/link";
-import { ArrowLeft, Sparkles } from "lucide-react";
-import { WorkCatalog } from "@/components/WorkCatalog";
+"use client";
 
-export const metadata = {
-  title: "My Lab · Work Archive · Fachri All Khijaro",
-  description: "Curated work and case studies across UI/UX, Branding, Events, and E-Commerce.",
-};
+import React, { useEffect, useRef } from "react";
+import Script from "next/script";
+import { RAW_WORK_HTML } from "@/data/raw-html";
 
 export default function WorkPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const nav = document.getElementById("nav");
+    function onScrollUi() {
+      if (!nav) return;
+      const isCompact = window.scrollY > 80;
+      nav.classList.toggle("compact", isCompact);
+    }
+    window.addEventListener("scroll", onScrollUi, { passive: true });
+    onScrollUi();
+
+    // Category chips filter logic on work page
+    const chips = Array.prototype.slice.call(document.querySelectorAll(".chips button, .chip")) as HTMLElement[];
+    const cards = Array.prototype.slice.call(document.querySelectorAll(".pcard, .work__card")) as HTMLElement[];
+
+    chips.forEach((ch) => {
+      ch.addEventListener("click", () => {
+        chips.forEach((c) => c.classList.remove("active"));
+        ch.classList.add("active");
+        const filter = ch.getAttribute("data-filter") || ch.innerText.trim().toLowerCase();
+
+        cards.forEach((card) => {
+          const cardCat = (card.getAttribute("data-cat") || "").toLowerCase();
+          if (filter === "all" || cardCat.includes(filter)) {
+            card.style.display = "";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      });
+    });
+
+    return () => {
+      window.removeEventListener("scroll", onScrollUi);
+    };
+  }, []);
+
   return (
-    <div className="max-w-5xl mx-auto px-6 pt-28 pb-16 space-y-12">
-      {/* Breadcrumb */}
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        <span>Back to Come In</span>
-      </Link>
+    <>
+      <Script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" strategy="afterInteractive" />
+      <Script src="/assets/motion.js" strategy="lazyOnload" />
 
-      {/* Header */}
-      <div className="space-y-4 max-w-2xl">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 text-xs font-mono text-neutral-600 font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>My Lab · Selected Works (2019 - Present)</span>
-        </div>
-        <h1 className="font-serif text-4xl sm:text-6xl font-bold text-neutral-900 leading-tight">
-          Where Design Meets Business.
-        </h1>
-        <p className="font-sans text-sm sm:text-base text-neutral-500 font-light leading-relaxed">
-          Welcome to my creative archive. Explore selected case studies across UI/UX digital products, brand identities, high-converting e-commerce storefronts, and event activations.
-        </p>
-      </div>
-
-      {/* Interactive Filterable Catalog */}
-      <WorkCatalog initialCategory="All" />
-    </div>
+      <div
+        ref={containerRef}
+        dangerouslySetInnerHTML={{ __html: RAW_WORK_HTML }}
+        suppressHydrationWarning
+      />
+    </>
   );
 }

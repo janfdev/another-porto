@@ -1,10 +1,12 @@
 @import "tailwindcss";
+@import "./original-portfolio.css";
 
 :root {
   --background: #ffffff;
   --foreground: #111111;
   --font-inter: "Inter", sans-serif;
   --font-serif: "Instrument Serif", serif;
+  --sub: "Fustat", "Inter", sans-serif;
 }
 
 body {

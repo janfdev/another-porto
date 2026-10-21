@@ -1,27 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
-import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-serif",
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
-  title: "Fachri All Khijaro · Multidisciplinary Designer",
+  title: "Fachri All Khijaro · Portfolio",
   description:
-    "Multidisciplinary Designer across visual communication, branding, marketing, UI/UX, and digital products.",
+    "Fachri All Khijaro - Multidisciplinary Designer across visual design, branding, marketing, UI/UX, and digital products.",
   icons: {
     icon: "/assets/favicon-32.png",
     apple: "/assets/apple-touch-icon.png",
@@ -34,13 +17,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${instrumentSerif.variable} antialiased`}>
-      <body className="min-h-screen bg-white text-neutral-900 font-sans selection:bg-neutral-900 selection:text-white flex flex-col justify-between">
-        <SmoothScrollProvider>
-          <Navigation />
-          <div className="flex-1">{children}</div>
-          <Footer />
-        </SmoothScrollProvider>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500&family=Inter:wght@300;400;500;600&family=Instrument+Serif&display=swap"
+          rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/assets/motion.css" />
+      </head>
+      <body className="antialiased">
+        {children}
       </body>
     </html>
   );
